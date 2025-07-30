@@ -181,7 +181,11 @@ function setupPortfolioTilt() {
     });
 }
 
-window.addEventListener('resize', resizeBalls);
+window.addEventListener('resize', () => {
+    resizeBalls();
+    resizeAirplanes();
+});
+
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         getBallsArea();
@@ -189,5 +193,80 @@ window.addEventListener('DOMContentLoaded', () => {
         setupMouseTracking();
         animateBalls();
         setupPortfolioTilt();
+
+        createAirplanes();
+        animateAirplanes();
     }, 200);
 });
+
+// --- Paper Airplane Animation ---
+const AIRPLANE_COUNT = 15;
+const airplanes = [];
+let airplaneAreaWidth = 0, airplaneAreaHeight = 0;
+
+function getAirplaneArea() {
+    const contact = document.getElementById('contact');
+    const bg = document.getElementById('airplane-bg');
+    if (contact && bg) {
+        const rect = contact.getBoundingClientRect();
+        airplaneAreaWidth = rect.width;
+        airplaneAreaHeight = rect.height;
+        bg.style.width = airplaneAreaWidth + 'px';
+        bg.style.height = airplaneAreaHeight + 'px';
+    }
+}
+
+function createAirplanes() {
+    const container = document.getElementById('airplane-bg');
+    if (!container) return;
+    getAirplaneArea();
+    container.innerHTML = '';
+    airplanes.length = 0;
+    for (let i = 0; i < AIRPLANE_COUNT; i++) {
+        const airplane = document.createElement('div');
+        airplane.className = 'airplane';
+        airplane.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" /></svg>`;
+        const x = randomBetween(0, airplaneAreaWidth);
+        const y = randomBetween(0, airplaneAreaHeight);
+        const angle = randomBetween(0, 2 * Math.PI);
+        const speed = randomBetween(0.5, 1.5);
+        airplane.style.left = x + 'px';
+        airplane.style.top = y + 'px';
+        airplanes.push({
+            el: airplane,
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            angle: angle,
+        });
+        container.appendChild(airplane);
+    }
+}
+
+function animateAirplanes() {
+    for (const airplane of airplanes) {
+        airplane.x += airplane.vx;
+        airplane.y += airplane.vy;
+
+        if (airplane.x < -24) airplane.x = airplaneAreaWidth + 24;
+        if (airplane.x > airplaneAreaWidth + 24) airplane.x = -24;
+        if (airplane.y < -24) airplane.y = airplaneAreaHeight + 24;
+        if (airplane.y > airplaneAreaHeight + 24) airplane.y = -24;
+
+        airplane.el.style.left = airplane.x + 'px';
+        airplane.el.style.top = airplane.y + 'px';
+        airplane.el.style.transform = `rotate(${airplane.angle + Math.PI / 2}rad)`;
+    }
+    requestAnimationFrame(animateAirplanes);
+}
+
+function resizeAirplanes() {
+    getAirplaneArea();
+    for (const airplane of airplanes) {
+        airplane.x = randomBetween(0, airplaneAreaWidth);
+        airplane.y = randomBetween(0, airplaneAreaHeight);
+        airplane.el.style.left = airplane.x + 'px';
+        airplane.el.style.top = airplane.y + 'px';
+    }
+}
+
