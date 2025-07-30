@@ -185,6 +185,7 @@ window.addEventListener('resize', () => {
     resizeBalls();
     resizeAirplanes();
 });
+
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         getBallsArea();
@@ -192,6 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setupMouseTracking();
         animateBalls();
         setupPortfolioTilt();
+
         createAirplanes();
         animateAirplanes();
     }, 200);
@@ -267,3 +269,4 @@ function resizeAirplanes() {
         airplane.el.style.top = airplane.y + 'px';
     }
 }
+
