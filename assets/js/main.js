@@ -217,8 +217,15 @@ function getAirplaneArea() {
 }
 
 function createAirplanes() {
+
+    console.log("createAirplanes called");
     const container = document.getElementById('airplane-bg');
-    if (!container) return;
+    if (!container) {
+        console.error("airplane-bg container not found!");
+        return;
+    }
+    console.log("airplane-bg container found:", container);
+
     getAirplaneArea();
     container.innerHTML = '';
     airplanes.length = 0;
@@ -244,6 +251,9 @@ function createAirplanes() {
 }
 
 function animateAirplanes() {
+
+    console.log("animateAirplanes called");
+
     for (const airplane of airplanes) {
         airplane.x += airplane.vx;
         airplane.y += airplane.vy;
