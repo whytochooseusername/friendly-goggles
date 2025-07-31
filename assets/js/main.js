@@ -185,6 +185,7 @@ window.addEventListener('resize', () => {
     resizeBalls();
     resizeAirplanes();
 });
+
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         getBallsArea();
@@ -192,6 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setupMouseTracking();
         animateBalls();
         setupPortfolioTilt();
+
         createAirplanes();
         animateAirplanes();
     }, 200);
@@ -215,6 +217,7 @@ function getAirplaneArea() {
 }
 
 function createAirplanes() {
+
     console.log("createAirplanes called");
     const container = document.getElementById('airplane-bg');
     if (!container) {
@@ -222,6 +225,7 @@ function createAirplanes() {
         return;
     }
     console.log("airplane-bg container found:", container);
+
     getAirplaneArea();
     container.innerHTML = '';
     airplanes.length = 0;
@@ -247,7 +251,9 @@ function createAirplanes() {
 }
 
 function animateAirplanes() {
+
     console.log("animateAirplanes called");
+
     for (const airplane of airplanes) {
         airplane.x += airplane.vx;
         airplane.y += airplane.vy;
@@ -273,3 +279,4 @@ function resizeAirplanes() {
         airplane.el.style.top = airplane.y + 'px';
     }
 }
+
